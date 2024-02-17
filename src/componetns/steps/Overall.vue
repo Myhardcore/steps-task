@@ -1,32 +1,29 @@
 <script>
-import {useStepsStore} from "@/stores/StepsStore.js";
-
+import {useResultStore} from "@/componetns/stores/ResultStore.js";
 export default {
     name: "Overall",
 
     setup() {
-        const stepsStore = useStepsStore();
+        const resultStore = useResultStore();
 
-        return {stepsStore}
+
+
+        return {resultStore}
     }
 }
 </script>
 
 <template>
     <main>
-        <!-- Выводим все данные-->
         <h2>Шаг 4: Проверка данных перед отправкой</h2>
+
         <div>
-            <p>Клиника : {{ stepsStore.selectedClinic.name }}</p>
-            <p>Врач : {{ stepsStore.selectedDoctor }}</p>
-            <ul>
-                <li v-for="user in stepsStore.userData">
-                    <p>Имя: {{ user.name }}</p>
-                    <p>Телефон: {{ user.phone }}</p>
-                    <p>Дата рождения: {{ user.birthDate }}</p>
-                    <p>E-mail: {{ user.email }}</p>
-                </li>
-            </ul>
+            <p>ФИО: {{ resultStore.getUserData.name }}</p>
+            <p>Телефон: {{ resultStore.getUserData.phone }}</p>
+            <p>Дата рождения: {{ resultStore.getUserData.birthDate }}</p>
+            <p>email: {{ resultStore.getUserData.email }}</p>
+            <p>Клиника: {{ resultStore.getClinic }}</p>
+            <p>Врач: {{ resultStore.getDoctor }}</p>
         </div>
 
     </main>

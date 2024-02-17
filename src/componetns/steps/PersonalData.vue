@@ -1,43 +1,54 @@
 <script>
-import {useStepsStore} from "@/stores/StepsStore.js";
+import {useStepsStore} from "@/componetns/stores/StepsStore.js";
+import {useResultStore} from "@/componetns/stores/ResultStore.js";
 import {ref} from "vue";
+
 export default {
     name: "PersonalData",
+
     setup() {
         const stepsStore = useStepsStore();
-        const username = ref('');
-        const phone = ref('');
-        const birthDate = ref('');
-        const email = ref('');
-        const switchStep = (name, phone, birthDate, email) => {
-            stepsStore.nextStep();
-            stepsStore.writeUserData({name: name, phone: phone, birthDate: birthDate, email: email});
+        const resultStore = useResultStore();
 
-            console.log('_______________________________')
-            console.log('Шаг:' + stepsStore.currentStep);
-            console.log('Клиника:' + stepsStore.selectedClinic.name);
-            console.log(stepsStore.selectedDoctor);
-            console.log(stepsStore.userData);
+        const name = ref('')
+        const phone = ref('')
+        const birthDate = ref('')
+        const email = ref('')
+
+        const nextStep = () => {
+            resultStore.writeUserData({
+                name: name.value,
+                phone: phone.value,
+                birthDate: birthDate.value,
+                email: email.value
+            });
+            stepsStore.nextStep();
+
+            //временно
+            console.log('_________________________')
+            console.log('Step: ' + stepsStore.getCurrentStep)
+            console.log('Clinic:  ' + resultStore.getClinic)
+            console.log('Doctor:  ' + resultStore.getDoctor)
+            console.log('UserData:  ' + resultStore.getUserData)
         }
 
-        return {stepsStore, username, phone,birthDate,email, switchStep}
+        return {stepsStore, resultStore, name, phone, birthDate, email, nextStep};
     }
 }
 </script>
 
 <template>
-<main>
-    <!-- Рисуем формы с инпутами для ввода данных -->
-    <h2>Шаг 3: Введите персональные данные</h2>
-    <form>
-        <input type="text" placeholder="ФИО" v-model="username">
-        <input type="text" placeholder="Телефон" v-model="phone">
-        <input type="text" placeholder="Дата рождения" v-model="birthDate">
-        <input type="text" placeholder="E-mail" v-model="email">
+    <main>
+        <h2>Шаг 3: Ваши данные</h2>
 
-        <button @click.prevent="switchStep(username, phone, birthDate, email)">Далее</button>
-    </form>
-</main>
+        <form>
+            <div><input type="text" placeholder="ФИО" v-model="name"></div>
+            <div><input type="text" placeholder="Телефон" v-model="phone"></div>
+            <div><input type="text" placeholder="Дата рождения" v-model="birthDate"></div>
+            <div><input type="text" placeholder="email" v-model="email"></div>
+            <button @click.prevent="nextStep(name)">Отправить</button>
+        </form>
+    </main>
 </template>
 
 <style scoped>
